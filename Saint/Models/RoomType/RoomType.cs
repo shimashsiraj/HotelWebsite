@@ -8,6 +8,7 @@
         public decimal Price { get; set; }
         public int Capacity { get; set; }
 
+
         public ICollection<RoomImage> Images { get; set; }
 
         public ICollection<Room> Rooms { get; set; }

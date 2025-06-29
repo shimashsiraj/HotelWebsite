@@ -21,7 +21,7 @@ namespace Saint.Data
         public DbSet<Payment> Payments { get; set; }
         public DbSet<HotelPolicy> HotelPolicies { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
-        public DbSet<RoomImage> RoomsImages { get; set; }
+        public DbSet<RoomImage> RoomImages { get; set; }
         public DbSet<Tax> Taxes { get; set; }
 
     }

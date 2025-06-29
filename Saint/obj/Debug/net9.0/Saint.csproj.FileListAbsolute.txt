@@ -404,3 +404,4 @@ C:\Users\saint\source\repos\Saint\Saint\bin\Debug\net9.0\ru\Microsoft.CodeAnalys
 C:\Users\saint\source\repos\Saint\Saint\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.Scripting.resources.dll
 C:\Users\saint\source\repos\Saint\Saint\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.Scripting.resources.dll
 C:\Users\saint\source\repos\Saint\Saint\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.Scripting.resources.dll
+C:\Users\saint\source\repos\Saint\Saint\obj\Debug\net9.0\Saint.sourcelink.json

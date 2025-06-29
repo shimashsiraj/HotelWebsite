@@ -56,19 +56,26 @@ namespace Saint.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Price,Capacity")] RoomType roomType, List<IFormFile> RoomsImages)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,Price,Capacity")] RoomType roomType, List<IFormFile> RoomImages)
         {
             if (ModelState.IsValid)
             {
+                foreach (var kvp in ModelState)
+                {
+                    foreach (var error in kvp.Value.Errors)
+                    {
+                        Console.WriteLine($"❌ Field: {kvp.Key} — Error: {error.ErrorMessage}");
+                    }
+                }
                 _context.Add(roomType);
                 await _context.SaveChangesAsync();
 
-                if (RoomsImages != null && RoomsImages.Count > 0)
+                if (RoomImages != null && RoomImages.Count > 0)
                 {
                     var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", "roomtypes", roomType.Id.ToString());
                     Directory.CreateDirectory(uploadsFolder);
 
-                    foreach (var image in RoomsImages)
+                    foreach (var image in RoomImages)
                     {
                         if (image.Length > 0)
                         {
@@ -85,7 +92,7 @@ namespace Saint.Controllers
                                 RoomTypeId = roomType.Id,
                                 ImageUrl = $"/images/roomtypes/{roomType.Id}/{fileName}"
                             };
-                            _context.RoomsImages.Add(roomImage);
+                            _context.RoomImages.Add(roomImage); // or _context.RoomsImages if you didn't rename
                         }
                     }
 
@@ -94,6 +101,11 @@ namespace Saint.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
+
+            // Log validation errors
+            foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                Console.WriteLine(error.ErrorMessage);
+
             return View(roomType);
             //if (ModelState.IsValid)
             //{
