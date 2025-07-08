@@ -11,7 +11,7 @@
 
         public ICollection<RoomImage> Images { get; set; }
 
-        public ICollection<Room> Rooms { get; set; }
-        public ICollection<Promotion> Promotions { get; set; }
+        //public ICollection<Room> Rooms { get; set; }
+        //public ICollection<Promotion> Promotions { get; set; }
     }
 }
