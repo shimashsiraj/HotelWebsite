@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
@@ -34,8 +34,13 @@
             </div>
             <div class="form-group">
                 <label for="RoomImages">Upload Room Images</label>
-                <input type="file" name="RoomImages" multiple class="form-control" />
+                <input type="file" name="RoomImages" multiple class="form-control" id="RoomImagesInput" accept="image/*" />
+                <div id="previewContainer" class="mt-3 d-flex flex-wrap gap-2"></div>
             </div>
+            @* <div class="form-group">
+                <label for="RoomImages">Upload Room Images</label>
+                <input type="file" name="RoomImages" multiple class="form-control" />
+            </div> *@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -49,4 +54,26 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        document.getElementById('RoomImagesInput').addEventListener('change', function (e) {
+            const previewContainer = document.getElementById('previewContainer');
+            previewContainer.innerHTML = ""; // Clear previous images
+
+            Array.from(e.target.files).forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.style.width = '100px';
+                        img.style.height = 'auto';
+                        img.className = "rounded shadow-sm";
+                        previewContainer.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+    </script>
 }

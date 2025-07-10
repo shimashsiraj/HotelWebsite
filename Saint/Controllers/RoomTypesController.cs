@@ -117,10 +117,9 @@ namespace Saint.Controllers
         //    //}
         //    //return View(roomType);
         //}
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(RoomType roomType, List<IFormFile> RoomImages)
+        public async Task<IActionResult> Create([Bind("Name,Description,Price,Capacity")] RoomType roomType, List<IFormFile> RoomImages)
         {
             Console.WriteLine("🎯 POST Create hit");
 
@@ -134,46 +133,66 @@ namespace Saint.Controllers
                         Console.WriteLine($"❌ Field: {kvp.Key} — Error: {error.ErrorMessage}");
                     }
                 }
-
                 return View(roomType);
             }
 
             Console.WriteLine("✅ ModelState is valid");
 
-            _context.Add(roomType);
-            await _context.SaveChangesAsync();
+            // Start a transaction
+            using var transaction = await _context.Database.BeginTransactionAsync();
 
-            if (RoomImages != null && RoomImages.Count > 0)
+            try
             {
-                var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", "roomtypes", roomType.Id.ToString());
-                Directory.CreateDirectory(uploadsFolder);
+                // Save RoomType first to generate ID
+                _context.Add(roomType);
+                await _context.SaveChangesAsync();
 
-                foreach (var image in RoomImages)
+                if (RoomImages != null && RoomImages.Count > 0)
                 {
-                    if (image.Length > 0)
+                    var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", "roomtypes", roomType.Id.ToString());
+                    Directory.CreateDirectory(uploadsFolder);
+
+                    foreach (var image in RoomImages)
                     {
-                        var fileName = Guid.NewGuid() + Path.GetExtension(image.FileName);
-                        var filePath = Path.Combine(uploadsFolder, fileName);
-
-                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        if (image.Length > 0)
                         {
-                            await image.CopyToAsync(stream);
+                            var fileName = Guid.NewGuid() + Path.GetExtension(image.FileName);
+                            var filePath = Path.Combine(uploadsFolder, fileName);
+
+                            using (var stream = new FileStream(filePath, FileMode.Create))
+                            {
+                                await image.CopyToAsync(stream);
+                            }
+
+                            var roomImage = new RoomImage
+                            {
+                                RoomTypeId = roomType.Id,
+                                ImageUrl = $"/images/roomtypes/{roomType.Id}/{fileName}"
+                            };
+                            _context.RoomImages.Add(roomImage);
                         }
-
-                        var roomImage = new RoomImage
-                        {
-                            RoomTypeId = roomType.Id,
-                            ImageUrl = $"/images/roomtypes/{roomType.Id}/{fileName}"
-                        };
-                        _context.RoomImages.Add(roomImage);
                     }
+
+                    await _context.SaveChangesAsync();
                 }
 
-                await _context.SaveChangesAsync();
-            }
+                // Commit the transaction if all succeeded
+                await transaction.CommitAsync();
 
-            return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                // Rollback transaction on error
+                await transaction.RollbackAsync();
+
+                Console.WriteLine($"❌ Exception during save: {ex.Message}");
+                ModelState.AddModelError("", "An error occurred saving the room type and images.");
+
+                return View(roomType);
+            }
         }
+
 
 
 

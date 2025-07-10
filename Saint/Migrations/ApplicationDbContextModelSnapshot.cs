@@ -244,6 +244,10 @@ namespace Saint.Migrations
                     b.Property<decimal>("DepositAmount")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("DepositMethod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("DepositReturnedDate")
                         .HasColumnType("datetime2");
 
@@ -462,7 +466,7 @@ namespace Saint.Migrations
                     b.ToTable("Rooms");
                 });
 
-            modelBuilder.Entity("Saint.Models.RoomImage", b =>
+            modelBuilder.Entity("Saint.Models.RoomImages", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -629,7 +633,7 @@ namespace Saint.Migrations
             modelBuilder.Entity("Saint.Models.Promotion", b =>
                 {
                     b.HasOne("Saint.Models.RoomType", "RoomType")
-                        .WithMany("Promotions")
+                        .WithMany()
                         .HasForeignKey("RoomTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -651,7 +655,7 @@ namespace Saint.Migrations
             modelBuilder.Entity("Saint.Models.Room", b =>
                 {
                     b.HasOne("Saint.Models.RoomType", "RoomType")
-                        .WithMany("Rooms")
+                        .WithMany()
                         .HasForeignKey("RoomTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -659,7 +663,7 @@ namespace Saint.Migrations
                     b.Navigation("RoomType");
                 });
 
-            modelBuilder.Entity("Saint.Models.RoomImage", b =>
+            modelBuilder.Entity("Saint.Models.RoomImages", b =>
                 {
                     b.HasOne("Saint.Models.RoomType", "RoomType")
                         .WithMany("Images")
@@ -691,10 +695,6 @@ namespace Saint.Migrations
             modelBuilder.Entity("Saint.Models.RoomType", b =>
                 {
                     b.Navigation("Images");
-
-                    b.Navigation("Promotions");
-
-                    b.Navigation("Rooms");
                 });
 #pragma warning restore 612, 618
         }
