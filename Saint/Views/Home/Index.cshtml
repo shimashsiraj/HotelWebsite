@@ -2,6 +2,7 @@
     ViewData["Title"] = "Home Page";
 }
 
+@model List<Saint.Models.RoomType>
 
 
 <div class="d-flex justify-content-center align-items-center text-center mb-3">
@@ -18,29 +19,63 @@
 
 
 
-<div class="d-flex justify-content-center gap-4 p-3">
-    <!-- Check-In -->
-    <div class="d-flex flex-column text-center">
-        <label for="checkIn" class="control-label" style="font-family:'Trebuchet MS';">Check-In</label>
-        <input id="checkIn" name="checkIn" type="date" class="form-control text-center p-2 rounded-3 bg-light"
-               style="width: 180px; font-family:'Franklin Gothic Medium';" />
+
+<form method="get" asp-action="Index" class="text-center">
+    <div class="d-flex justify-content-center gap-4 p-3">
+        <!-- Check-In -->
+        <div class="d-flex flex-column text-center">
+            <label for="checkIn" class="control-label" style="font-family:'Trebuchet MS';">Check-In</label>
+            <input id="checkIn" name="checkIn" value="@ViewBag.CheckIn" type="date" class="form-control text-center p-2 rounded-3 bg-light"
+                   style="width: 180px; font-family:'Franklin Gothic Medium';" />
+        </div>
+
+        <!-- Check-Out -->
+        <div class="d-flex flex-column text-center">
+            <label for="checkOut" class="control-label" style="font-family:'Trebuchet MS';">Check-Out</label>
+            <input id="checkOut" name="checkOut" value="@ViewBag.CheckOut" type="date" class="form-control text-center p-2 rounded-3 bg-light"
+                   style="width: 180px; font-family:'Franklin Gothic Medium';" />
+        </div>
+
+        <!-- Occupancy (hidden input to hold the number) -->
+        <div class="d-flex flex-column text-center">
+            <label class="control-label" style="font-family:'Trebuchet MS';">Occupancy</label>
+            <button type="button" class="btn btn-outline-secondary rounded-3" style="width: 300px;" data-bs-toggle="modal" data-bs-target="#occupancyModal" id="occupancyDisplay">
+                2 Persons
+            </button>
+            <input type="hidden" id="occupancy" name="occupancy" value="@ViewBag.Occupancy" min="1"/>
+        </div>
     </div>
 
-    <!-- Check-Out -->
-    <div class="d-flex flex-column text-center">
-        <label for="checkOut" class="control-label" style="font-family:'Trebuchet MS';">Check-Out</label>
-        <input id="checkOut" name="checkOut" type="date" class="form-control text-center p-2 rounded-3 bg-light"
-               style="width: 180px; font-family:'Franklin Gothic Medium';" />
-    </div>
+    <button type="submit" class="btn btn-primary mt-3">Search Rooms</button>
+</form>
 
-    <!-- Occupancy -->
-    <div class="d-flex flex-column text-center">
-        <label class="control-label" style="font-family:'Trebuchet MS';">Occupancy</label>
-        <button class="btn btn-outline-secondary rounded-3" style="width: 300px;" data-bs-toggle="modal" data-bs-target="#occupancyModal" id="occupancyDisplay">
-            2 Persons
-        </button>
+@if (Model != null && Model.Any())
+{
+    <h3 class="mt-5">Available Room Types</h3>
+    <div class="row">
+        @foreach (var rt in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <img src="/images/rooms/@rt.RoomImages" class="card-img-top" alt="@rt.Name" />
+
+                    <div class="card-body">
+                        <h5 class="card-title">@rt.Name</h5>
+                        <p class="card-text">Capacity: @rt.Capacity</p>
+                        <p class="card-text">@rt.Description</p>
+                        <a href="@Url.Action("Book", "Booking", new { roomTypeId = rt.Id, checkIn = ViewBag.CheckIn, checkOut = ViewBag.CheckOut })"
+                           class="btn btn-primary">Book Now</a>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
-</div>
+}
+else if (Context.Request.Query.Count > 0)
+{
+    <p class="text-danger mt-5">No rooms available for your selection.</p>
+}
+
 
 
 <!-- Modal -->
@@ -82,15 +117,32 @@
     const checkInInput = document.getElementById("checkIn");
     const checkOutInput = document.getElementById("checkOut");
 
-    // Set initial dates
-    const today = new Date().toISOString().split("T")[0];
-    checkInInput.value = today;
-    checkInInput.min = today;
 
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    checkOutInput.value = tomorrow.toISOString().split("T")[0];
-    checkOutInput.min = tomorrow.toISOString().split("T")[0];
+    if (!checkInInput.value) {
+        const todayDate = new Date();
+        todayDate.setMinutes(todayDate.getMinutes() - todayDate.getTimezoneOffset());
+        const todayStr = todayDate.toISOString().split("T")[0];
+        checkInInput.value = todayStr;
+        checkInInput.min = todayStr;
+    } else {
+        // Ensure min is always at least today
+        const minDate = new Date();
+        minDate.setMinutes(minDate.getMinutes() - minDate.getTimezoneOffset());
+        checkInInput.min = minDate.toISOString().split("T")[0];
+    }
+
+    if (!checkOutInput.value) {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        checkOutInput.value = tomorrow.toISOString().split("T")[0];
+        checkOutInput.min = tomorrow.toISOString().split("T")[0];
+    } else {
+        const checkInDate = new Date(checkInInput.value);
+        const minCheckout = new Date(checkInDate);
+        minCheckout.setDate(minCheckout.getDate() + 1);
+        checkOutInput.min = minCheckout.toISOString().split("T")[0];
+    }
+
 
     checkInInput.addEventListener("change", () => {
         const checkInDate = new Date(checkInInput.value);
@@ -104,16 +156,20 @@
             checkOutInput.value = minStr;
         }
 
-        updateOccupancy(); // Update nights when check-in changes
+        updateOccupancy(); 
     });
 
     checkOutInput.addEventListener("change", () => {
-        updateOccupancy(); // Update nights when check-out changes
+        updateOccupancy(); 
     });
+
 
     function updateOccupancy() {
         let adults = parseInt(document.getElementById("adults").textContent);
         const children = parseInt(document.getElementById("children").textContent);
+        const occupancy = adults + children;
+
+        document.getElementById("occupancy").value = occupancy;
 
         const checkInDate = new Date(checkInInput.value);
         const checkOutDate = new Date(checkOutInput.value);
@@ -123,8 +179,6 @@
         let label = "";
 
         if (children > 0) {
-            // Always show 2 adults with children
-
             const childLabel = `${children} ${children === 1 ? "Child" : "Children"}`;
             label = `${adults} Adults and ${childLabel} — ${nights} ${nights === 1 ? "Night" : "Nights"}`;
         } else {
@@ -133,6 +187,7 @@
 
         document.getElementById("occupancyDisplay").innerText = label;
     }
+
 
 
     // Initial call
@@ -157,6 +212,10 @@
         }
 
         updateOccupancy(); // Reflect change immediately
+    }
+
+        if (performance.navigation.type === 1) { // 1 = Reload
+        window.location.href = '/Home/Index';
     }
 
 </script>

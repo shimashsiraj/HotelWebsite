@@ -62,6 +62,7 @@ C:\Users\saint\source\repos\Saint\Saint\wwwroot\lib\bootstrap\dist\css\bootstrap
 C:\Users\saint\source\repos\Saint\Saint\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css.map
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\images\rooms\aee7b84c-32f7-44d1-b81a-10a2c61c6a6f.JPG
 wwwroot\images\toronto.png
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap.css

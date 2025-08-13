@@ -1,0 +1,25 @@
+﻿@model Saint.Models.AdminViewModel.AdminViewModel
+@using Saint.Models.AdminViewModel
+
+
+
+<h2>Rooms</h2>
+<table>
+
+	@foreach (var roomType in Model.RoomTypes){
+		<tr>
+			<td>@roomType.Name</td>
+		</tr>
+	}
+
+	<thead>Room No.</thead>
+
+	@foreach (var room in Model.Rooms)
+	{
+		<tr>
+			<td>@room.RoomNumber</td>
+		</tr>
+
+
+	}
+</table>

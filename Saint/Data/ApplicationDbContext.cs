@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Saint.Models;
+using Saint.Models.AdminViewModel;
 using Saint.Models.Invoice;
 
 namespace Saint.Data

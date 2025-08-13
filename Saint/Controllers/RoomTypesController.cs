@@ -51,153 +51,214 @@ namespace Saint.Controllers
             return View();
         }
 
-        // POST: RoomTypes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        ////public async Task<IActionResult> Create([Bind("Id,Name,Description,Price,Capacity")] RoomType roomType, List<IFormFile> RoomImages)
-        //public async Task<IActionResult> Create(RoomType roomType, List<IFormFile> RoomImages)
-
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        foreach (var kvp in ModelState)
-        //        {
-        //            foreach (var error in kvp.Value.Errors)
-        //            {
-        //                Console.WriteLine($"❌ Field: {kvp.Key} — Error: {error.ErrorMessage}");
-        //            }
-        //        }
-        //        _context.Add(roomType);
-        //        await _context.SaveChangesAsync();
-
-        //        if (RoomImages != null && RoomImages.Count > 0)
-        //        {
-        //            var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", "roomtypes", roomType.Id.ToString());
-        //            Directory.CreateDirectory(uploadsFolder);
-
-        //            foreach (var image in RoomImages)
-        //            {
-        //                if (image.Length > 0)
-        //                {
-        //                    var fileName = Guid.NewGuid() + Path.GetExtension(image.FileName);
-        //                    var filePath = Path.Combine(uploadsFolder, fileName);
-
-        //                    using (var stream = new FileStream(filePath, FileMode.Create))
-        //                    {
-        //                        await image.CopyToAsync(stream);
-        //                    }
-
-        //                    var roomImage = new RoomImage
-        //                    {
-        //                        RoomTypeId = roomType.Id,
-        //                        ImageUrl = $"/images/roomtypes/{roomType.Id}/{fileName}"
-        //                    };
-        //                    _context.RoomImages.Add(roomImage); // or _context.RoomsImages if you didn't rename
-        //                }
-        //            }
-
-        //            await _context.SaveChangesAsync();
-        //        }
-
-        //        return RedirectToAction(nameof(Index));
-        //    }
-
-        //    // Log validation errors
-        //    foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-        //        Console.WriteLine(error.ErrorMessage);
-
-        //    return View(roomType);
-        //    //if (ModelState.IsValid)
-        //    //{
-        //    //    _context.Add(roomType);
-        //    //    await _context.SaveChangesAsync();
-        //    //    return RedirectToAction(nameof(Index));
-        //    //}
-        //    //return View(roomType);
-        //}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Description,Price,Capacity")] RoomType roomType, List<IFormFile> RoomImages)
+        //public async Task<IActionResult> Create([Bind("Id,Name,Description,Price,Capacity")] RoomType roomType)
+        public async Task<IActionResult> Create(RoomTypeCreateViewModel model)
         {
-            Console.WriteLine("🎯 POST Create hit");
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                Console.WriteLine("❌ ModelState is invalid");
-                foreach (var kvp in ModelState)
+                // 1. Create RoomType
+                var roomType = new RoomType
                 {
-                    foreach (var error in kvp.Value.Errors)
-                    {
-                        Console.WriteLine($"❌ Field: {kvp.Key} — Error: {error.ErrorMessage}");
-                    }
-                }
-                return View(roomType);
-            }
+                    Name = model.Name,
+                    Description = model.Description,
+                    Price = model.Price,
+                    Capacity = model.Capacity
+                };
 
-            Console.WriteLine("✅ ModelState is valid");
+                _context.RoomTypes.Add(roomType);
+                await _context.SaveChangesAsync(); // Save first to get RoomType.Id
 
-            // Start a transaction
-            using var transaction = await _context.Database.BeginTransactionAsync();
-
-            try
-            {
-                // Save RoomType first to generate ID
-                _context.Add(roomType);
-                await _context.SaveChangesAsync();
-
-                if (RoomImages != null && RoomImages.Count > 0)
+                // 2. Handle images
+                if (model.RoomImages != null && model.RoomImages.Count > 0)
                 {
-                    var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", "roomtypes", roomType.Id.ToString());
-                    Directory.CreateDirectory(uploadsFolder);
-
-                    foreach (var image in RoomImages)
+                    foreach (var file in model.RoomImages)
                     {
-                        if (image.Length > 0)
+                        if (file.Length > 0)
                         {
-                            var fileName = Guid.NewGuid() + Path.GetExtension(image.FileName);
-                            var filePath = Path.Combine(uploadsFolder, fileName);
+                            // Save file to wwwroot/images/rooms
+                            var fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
+                            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/rooms", fileName);
 
                             using (var stream = new FileStream(filePath, FileMode.Create))
                             {
-                                await image.CopyToAsync(stream);
+                                await file.CopyToAsync(stream);
                             }
 
+                            // Add DB record
                             var roomImage = new RoomImage
                             {
                                 RoomTypeId = roomType.Id,
-                                ImageUrl = $"/images/roomtypes/{roomType.Id}/{fileName}"
+                                ImageUrl = "/images/rooms/" + fileName,
+                                Caption = "" // Optional
                             };
+
                             _context.RoomImages.Add(roomImage);
                         }
                     }
-
                     await _context.SaveChangesAsync();
                 }
 
-                // Commit the transaction if all succeeded
-                await transaction.CommitAsync();
-
                 return RedirectToAction(nameof(Index));
             }
-            catch (Exception ex)
-            {
-                // Rollback transaction on error
-                await transaction.RollbackAsync();
 
-                Console.WriteLine($"❌ Exception during save: {ex.Message}");
-                ModelState.AddModelError("", "An error occurred saving the room type and images.");
-
-                return View(roomType);
-            }
+            return View(model);
         }
 
 
 
+    // POST: RoomTypes/Create
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    //[HttpPost]
+    //[ValidateAntiForgeryToken]
+    ////public async Task<IActionResult> Create([Bind("Id,Name,Description,Price,Capacity")] RoomType roomType, List<IFormFile> RoomImages)
+    //public async Task<IActionResult> Create(RoomType roomType, List<IFormFile> RoomImages)
 
-        // GET: RoomTypes/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+    //{
+    //    if (ModelState.IsValid)
+    //    {
+    //        foreach (var kvp in ModelState)
+    //        {
+    //            foreach (var error in kvp.Value.Errors)
+    //            {
+    //                Console.WriteLine($"❌ Field: {kvp.Key} — Error: {error.ErrorMessage}");
+    //            }
+    //        }
+    //        _context.Add(roomType);
+    //        await _context.SaveChangesAsync();
+
+    //        if (RoomImages != null && RoomImages.Count > 0)
+    //        {
+    //            var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", "roomtypes", roomType.Id.ToString());
+    //            Directory.CreateDirectory(uploadsFolder);
+
+    //            foreach (var image in RoomImages)
+    //            {
+    //                if (image.Length > 0)
+    //                {
+    //                    var fileName = Guid.NewGuid() + Path.GetExtension(image.FileName);
+    //                    var filePath = Path.Combine(uploadsFolder, fileName);
+
+    //                    using (var stream = new FileStream(filePath, FileMode.Create))
+    //                    {
+    //                        await image.CopyToAsync(stream);
+    //                    }
+
+    //                    var roomImage = new RoomImage
+    //                    {
+    //                        RoomTypeId = roomType.Id,
+    //                        ImageUrl = $"/images/roomtypes/{roomType.Id}/{fileName}"
+    //                    };
+    //                    _context.RoomImages.Add(roomImage); // or _context.RoomsImages if you didn't rename
+    //                }
+    //            }
+
+    //            await _context.SaveChangesAsync();
+    //        }
+
+    //        return RedirectToAction(nameof(Index));
+    //    }
+
+    //    // Log validation errors
+    //    foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+    //        Console.WriteLine(error.ErrorMessage);
+
+    //    return View(roomType);
+    ////    if (ModelState.IsValid)
+    ////    {
+    ////        _context.Add(roomType);
+    ////        await _context.SaveChangesAsync();
+    ////        return RedirectToAction(nameof(Index));
+    ////}
+    ////    return View(roomType);
+    //}
+    //[HttpPost]
+    //[ValidateAntiForgeryToken]
+    //public async Task<IActionResult> Create([Bind("Name,Description,Price,Capacity")] RoomType roomType, List<IFormFile> RoomImages)
+    //{
+    //    Console.WriteLine("🎯 POST Create hit");
+
+    //    if (!ModelState.IsValid)
+    //    {
+    //        Console.WriteLine("❌ ModelState is invalid");
+    //        foreach (var kvp in ModelState)
+    //        {
+    //            foreach (var error in kvp.Value.Errors)
+    //            {
+    //                Console.WriteLine($"❌ Field: {kvp.Key} — Error: {error.ErrorMessage}");
+    //            }
+    //        }
+    //        return View(roomType);
+    //    }
+
+    //    Console.WriteLine("✅ ModelState is valid");
+
+    //    // Start a transaction
+    //    using var transaction = await _context.Database.BeginTransactionAsync();
+
+    //    try
+    //    {
+    //        // Save RoomType first to generate ID
+    //        _context.Add(roomType);
+    //        await _context.SaveChangesAsync();
+
+    //        if (RoomImages != null && RoomImages.Count > 0)
+    //        {
+    //            var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", "roomtypes", roomType.Id.ToString());
+    //            Directory.CreateDirectory(uploadsFolder);
+
+    //            foreach (var image in RoomImages)
+    //            {
+    //                if (image.Length > 0)
+    //                {
+    //                    var fileName = Guid.NewGuid() + Path.GetExtension(image.FileName);
+    //                    var filePath = Path.Combine(uploadsFolder, fileName);
+
+    //                    using (var stream = new FileStream(filePath, FileMode.Create))
+    //                    {
+    //                        await image.CopyToAsync(stream);
+    //                    }
+
+    //                    var roomImage = new RoomImage
+    //                    {
+    //                        RoomTypeId = roomType.Id,
+    //                        ImageUrl = $"/images/roomtypes/{roomType.Id}/{fileName}"
+    //                    };
+
+    //                    // Add the RoomImage to the Images collection
+    //                    roomType.Images.Add(roomImage);
+    //                }
+    //            }
+
+    //            await _context.SaveChangesAsync();
+    //        }
+
+    //        // Commit the transaction if all succeeded
+    //        await transaction.CommitAsync();
+
+    //        return RedirectToAction(nameof(Index));
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // Rollback transaction on error
+    //        await transaction.RollbackAsync();
+
+    //        Console.WriteLine($"❌ Exception during save: {ex.Message}");
+    //        ModelState.AddModelError("", "An error occurred saving the room type and images.");
+
+    //        return View(roomType);
+    //    }
+    //}
+
+
+
+
+
+    // GET: RoomTypes/Edit/5
+    public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
