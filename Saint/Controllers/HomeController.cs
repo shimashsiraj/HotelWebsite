@@ -22,7 +22,7 @@ namespace Saint.Controllers
         //    return View();
         //}
 
-        public IActionResult Index(DateTime? checkIn, DateTime? checkOut, int? occupancy = 2)
+        public IActionResult Index(DateTime? checkIn, DateTime? checkOut, int? occupancy)
         {
             bool hasCheckIn = Request.Query.ContainsKey("checkIn");
             bool hasCheckOut = Request.Query.ContainsKey("checkOut");
