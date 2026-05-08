@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Saint.Data;
 using Saint.Models;
-using Saint.Models.AdminViewModel;
 
 namespace Saint.Controllers
 {
@@ -19,14 +18,15 @@ namespace Saint.Controllers
 
         public IActionResult AdminView()
         {
-            var model = new AdminViewModel
-            {
-                Rooms = _context.Rooms.ToList(),
-                RoomTypes = _context.RoomTypes.ToList()
-                //RoomImages = _context.RoomImages.ToList()
-            };
-
-            return View(model);
+            ViewData["ShowNavbar"] = true;
+            return View();
         }
+
+        public IActionResult HotelPolicy()
+        {
+            ViewData["ShowNavbar"] = true;
+            return View();
+        }
+
     }
 }

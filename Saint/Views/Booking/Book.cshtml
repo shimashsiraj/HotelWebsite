@@ -1,0 +1,225 @@
+﻿@model Saint.Models.ViewModels.BookingWizardViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="d-block gap-0 mt-5 m-0 p-0 text-center">
+    <h5 class="text-dark fw-bold fs-1 mb-5">@Model.RoomTypeName</h5>
+    <div class="d-flex gap-3">
+        <div class="card w-25">
+            <p class="mb-0">Check-In:</p>             
+           <p class="fw-bold">@Model.CheckIn.ToShortDateString()</p>
+        </div>
+        <div class="card w-25">
+            <p class="mb-0">Check-Out:</p>             
+           <p class="fw-bold">@Model.CheckOut.ToShortDateString()</p>
+        </div>
+        <div class="card w-25">
+            <p class="mb-0">Nights:</p>             
+            <p class="fw-bold">@Model.Nights</p>
+        </div>
+        <div class="card w-25">
+            <p class="mb-0">Guests:</p>             
+            <p class="fw-bold">@Model.Occupancy</p>
+        </div>
+    </div>
+
+</div>
+
+<div class="d-flex m-3 justify-content-center align-items-center">
+    @if (Model.RoomImages != null && Model.RoomImages.Any())
+    {
+        <div class="room-images">
+            @foreach (var imageUrl in Model.RoomImages)
+            {
+                <img src="@imageUrl" alt="Room Image" class="img-thumbnail m-1" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-image="@imageUrl" style="width: 200px; height: 220px; cursor: pointer;" />
+            }
+        </div>
+    }
+    else
+    {
+        <p>No images available for this room type.</p>
+    }
+</div>
+
+<!-- Modal for Enlarged Image with Carousel -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Pictures</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="carouselImages" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        @foreach (var imageUrl in Model.RoomImages)
+                        {
+                            <div class="carousel-item @((Model.RoomImages.First() == imageUrl) ? "active" : "")">
+                                <img src="@imageUrl" class="d-block w-100 h-75" alt="Room Image">
+                            </div>
+                        }
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselImages" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselImages" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Modal for terms & conditions *@
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="termsModalLabel">Terms & Conditions</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @if (Model.Policies != null && Model.Policies.Any())
+                {
+                    <ul>
+                        @foreach (var policy in Model.Policies)
+                        {
+                            <li>
+                                <h4>@policy.Title</h4>
+                                <p>@policy.Description</p>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p>No policies available at the moment.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Payment Breakdown -->
+<div class="row justify-content-center align-content-center">
+    <div class="col-md-6">
+        <div class="form-control">
+            <div class="row">
+                <div class="col-md-6">
+                    <label asp-for="FirstName" class="control-label"></label>
+                    <input asp-for="FirstName" class="form-control" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="LastName" class="control-label"></label>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="CountryCode" class="control-label">Country Code</label>
+                    <select asp-for="CountryCode" class="form-control">
+                        <option value="+1">+1 (USA)</option>
+                        <option value="+44">+44 (UK)</option>
+                        <option value="+91">+91 (India)</option>
+                        <option value="+61">+61 (Australia)</option>
+                        <!-- Add more country codes here -->
+                    </select>
+                    <span asp-validation-for="CountryCode" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="Phone" class="control-label"></label>
+                    <input asp-for="Phone" class="form-control" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group mt-1">
+                <input type="checkbox" id="agreeTerms" class="me-1" />
+                I agree to all <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms & Conditions</a>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="card col-md-3">
+        <h3 class="card-title mt-3 text-dark-emphasis">Payment Breakdown</h3>
+        <hr />
+
+        <table>
+            <tr>
+                <td>
+                    Room Price
+                </td>
+                <td class="text-end">
+                    C$@Model.RoomCost
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Taxes
+                </td>
+                <td class="text-end">
+                    C$@Model.Tax
+                </td>
+            </tr>
+
+            <tr style="border-top: solid">
+                <td>
+                    Total Due:
+                </td>
+                <td class="text-end text-danger">
+                    C$@Model.TotalCost
+                </td>
+            </tr>
+        </table>
+
+        <button class="btn btn-success mt-5 mb-4" id="payBtn" disabled>Proceed to Checkout</button>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const checkbox = document.getElementById("agreeTerms");
+            const payBtn = document.getElementById("payBtn");
+
+            checkbox.addEventListener("change", function () {
+                payBtn.disabled = !this.checked;
+            });
+
+            const modalElement = document.getElementById('imageModal');
+            const modalInstance = new bootstrap.Modal(modalElement);
+
+            modalElement.addEventListener('hidden.bs.modal', function () {
+                // Reset page state after modal is closed
+                document.body.classList.remove('modal-open');  // Remove modal-open class
+                document.body.style.overflow = 'auto';  // Restore scrolling
+                payBtn.disabled = false;  // Reset the button if needed
+            });
+
+            // Modal for Terms & Conditions
+            const termsModalElement = document.getElementById('termsModal');
+            const termsModalInstance = new bootstrap.Modal(termsModalElement);
+        });
+
+    </script>
+
+}

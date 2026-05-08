@@ -13,8 +13,92 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\saint\\source\\repos\\Saint\\Saint\\wwwroot\\images\\account.png",
+      "PackagePath": "staticwebassets\\images\\account.png"
+    },
+    {
+      "Id": "C:\\Users\\saint\\source\\repos\\Saint\\Saint\\wwwroot\\images\\fifa.png",
+      "PackagePath": "staticwebassets\\images\\fifa.png"
+    },
+    {
+      "Id": "C:\\Users\\saint\\source\\repos\\Saint\\Saint\\wwwroot\\images\\rooms\\02f88992-0e32-48b3-acd0-0f4f5577c588.JPG",
+      "PackagePath": "staticwebassets\\images\\rooms\\02f88992-0e32-48b3-acd0-0f4f5577c588.JPG"
+    },
+    {
+      "Id": "C:\\Users\\saint\\source\\repos\\Saint\\Saint\\wwwroot\\images\\rooms\\1aa74653-f34e-4704-857f-c108224e7ae4.JPG",
+      "PackagePath": "staticwebassets\\images\\rooms\\1aa74653-f34e-4704-857f-c108224e7ae4.JPG"
+    },
+    {
+      "Id": "C:\\Users\\saint\\source\\repos\\Saint\\Saint\\wwwroot\\images\\rooms\\318145bb-f7d9-4e9c-aac4-874d6f90924f.JPG",
+      "PackagePath": "staticwebassets\\images\\rooms\\318145bb-f7d9-4e9c-aac4-874d6f90924f.JPG"
+    },
+    {
+      "Id": "C:\\Users\\saint\\source\\repos\\Saint\\Saint\\wwwroot\\images\\rooms\\3f240381-f8e1-4bf7-9f9f-f2a3b9135bf4.JPG",
+      "PackagePath": "staticwebassets\\images\\rooms\\3f240381-f8e1-4bf7-9f9f-f2a3b9135bf4.JPG"
+    },
+    {
+      "Id": "C:\\Users\\saint\\source\\repos\\Saint\\Saint\\wwwroot\\images\\rooms\\50283096-e789-4482-bacd-a85516d868a2.JPG",
+      "PackagePath": "staticwebassets\\images\\rooms\\50283096-e789-4482-bacd-a85516d868a2.JPG"
+    },
+    {
+      "Id": "C:\\Users\\saint\\source\\repos\\Saint\\Saint\\wwwroot\\images\\rooms\\50703116-2666-49fe-923e-efd2f85049f6.JPG",
+      "PackagePath": "staticwebassets\\images\\rooms\\50703116-2666-49fe-923e-efd2f85049f6.JPG"
+    },
+    {
+      "Id": "C:\\Users\\saint\\source\\repos\\Saint\\Saint\\wwwroot\\images\\rooms\\604366ab-33d6-43a4-9f24-82f233e23d72.JPG",
+      "PackagePath": "staticwebassets\\images\\rooms\\604366ab-33d6-43a4-9f24-82f233e23d72.JPG"
+    },
+    {
+      "Id": "C:\\Users\\saint\\source\\repos\\Saint\\Saint\\wwwroot\\images\\rooms\\65d4587b-f97a-4554-b569-61d404cbd442.JPG",
+      "PackagePath": "staticwebassets\\images\\rooms\\65d4587b-f97a-4554-b569-61d404cbd442.JPG"
+    },
+    {
+      "Id": "C:\\Users\\saint\\source\\repos\\Saint\\Saint\\wwwroot\\images\\rooms\\78d5b950-41de-4730-a4fd-9b54c7eaaaf2.JPG",
+      "PackagePath": "staticwebassets\\images\\rooms\\78d5b950-41de-4730-a4fd-9b54c7eaaaf2.JPG"
+    },
+    {
+      "Id": "C:\\Users\\saint\\source\\repos\\Saint\\Saint\\wwwroot\\images\\rooms\\7c5a9290-0ea6-4de6-8f1b-811c16c0f153.JPG",
+      "PackagePath": "staticwebassets\\images\\rooms\\7c5a9290-0ea6-4de6-8f1b-811c16c0f153.JPG"
+    },
+    {
+      "Id": "C:\\Users\\saint\\source\\repos\\Saint\\Saint\\wwwroot\\images\\rooms\\983a6c58-215c-4f0c-913f-46bd26e22b26.JPG",
+      "PackagePath": "staticwebassets\\images\\rooms\\983a6c58-215c-4f0c-913f-46bd26e22b26.JPG"
+    },
+    {
+      "Id": "C:\\Users\\saint\\source\\repos\\Saint\\Saint\\wwwroot\\images\\rooms\\9b1e1563-a1c9-4d4a-bbe2-070207167b83.JPG",
+      "PackagePath": "staticwebassets\\images\\rooms\\9b1e1563-a1c9-4d4a-bbe2-070207167b83.JPG"
+    },
+    {
       "Id": "C:\\Users\\saint\\source\\repos\\Saint\\Saint\\wwwroot\\images\\rooms\\aee7b84c-32f7-44d1-b81a-10a2c61c6a6f.JPG",
       "PackagePath": "staticwebassets\\images\\rooms\\aee7b84c-32f7-44d1-b81a-10a2c61c6a6f.JPG"
+    },
+    {
+      "Id": "C:\\Users\\saint\\source\\repos\\Saint\\Saint\\wwwroot\\images\\rooms\\bc0b418e-89de-40ab-a675-891e2d70dfc3.JPG",
+      "PackagePath": "staticwebassets\\images\\rooms\\bc0b418e-89de-40ab-a675-891e2d70dfc3.JPG"
+    },
+    {
+      "Id": "C:\\Users\\saint\\source\\repos\\Saint\\Saint\\wwwroot\\images\\rooms\\c3647cc3-6834-45d3-bf08-18928d58c9c7.JPG",
+      "PackagePath": "staticwebassets\\images\\rooms\\c3647cc3-6834-45d3-bf08-18928d58c9c7.JPG"
+    },
+    {
+      "Id": "C:\\Users\\saint\\source\\repos\\Saint\\Saint\\wwwroot\\images\\rooms\\cb1bc0fa-3207-4b77-a40d-7989a8fda770.JPG",
+      "PackagePath": "staticwebassets\\images\\rooms\\cb1bc0fa-3207-4b77-a40d-7989a8fda770.JPG"
+    },
+    {
+      "Id": "C:\\Users\\saint\\source\\repos\\Saint\\Saint\\wwwroot\\images\\rooms\\d13e8762-5cb7-4e67-9246-c95c177496d3.JPG",
+      "PackagePath": "staticwebassets\\images\\rooms\\d13e8762-5cb7-4e67-9246-c95c177496d3.JPG"
+    },
+    {
+      "Id": "C:\\Users\\saint\\source\\repos\\Saint\\Saint\\wwwroot\\images\\rooms\\d7f1f26d-1ea7-45d9-922b-c2df43c5442a.JPG",
+      "PackagePath": "staticwebassets\\images\\rooms\\d7f1f26d-1ea7-45d9-922b-c2df43c5442a.JPG"
+    },
+    {
+      "Id": "C:\\Users\\saint\\source\\repos\\Saint\\Saint\\wwwroot\\images\\rooms\\f05761d9-a798-4dd0-b505-1549bc6c8157.JPG",
+      "PackagePath": "staticwebassets\\images\\rooms\\f05761d9-a798-4dd0-b505-1549bc6c8157.JPG"
+    },
+    {
+      "Id": "C:\\Users\\saint\\source\\repos\\Saint\\Saint\\wwwroot\\images\\rooms\\f429b5ab-b835-4024-bac3-bdc59d8171f0.JPG",
+      "PackagePath": "staticwebassets\\images\\rooms\\f429b5ab-b835-4024-bac3-bdc59d8171f0.JPG"
     },
     {
       "Id": "C:\\Users\\saint\\source\\repos\\Saint\\Saint\\wwwroot\\images\\toronto.png",

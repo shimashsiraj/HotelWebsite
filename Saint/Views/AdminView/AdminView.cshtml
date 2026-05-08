@@ -1,25 +1,102 @@
-﻿@model Saint.Models.AdminViewModel.AdminViewModel
-@using Saint.Models.AdminViewModel
+﻿@model Saint.Models.AdminViewModel
+@{
+    ViewData["Title"] = "Admin";
+}
 
 
+@if (ViewData["ShowNavbar"] != null && (bool)ViewData["ShowNavbar"])
+{
 
-<h2>Rooms</h2>
-<table>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-	@foreach (var roomType in Model.RoomTypes){
-		<tr>
-			<td>@roomType.Name</td>
-		</tr>
-	}
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-center align-items-center">
+                    <ul class="navbar-nav mx-5 gap-4" style="font-family: Verdana;">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="#" data-url="/Ca">Calendar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="#" data-url="/RoomTypes/Index">Room Types</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="#" data-url="/Rooms/Index">Rooms</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="#" data-url="/HotelPolicies/Index">Policies</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="#" data-url="/Promotions/Index">Promotions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="#" data-url="/Tax/Index">Tax</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="#" data-url="/Customers/Index">Customers</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="#" data-url="/Invoices/Index">Invoices</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+}
 
-	<thead>Room No.</thead>
+<div id="contentArea">
 
-	@foreach (var room in Model.Rooms)
-	{
-		<tr>
-			<td>@room.RoomNumber</td>
-		</tr>
+</div>
 
+@section Scripts {
+    <script>
+        // document.addEventListener("DOMContentLoaded", () => {
+        //     const contentArea = document.getElementById("contentArea");
 
-	}
-</table>
+        //     document.querySelectorAll("a[data-url]").forEach(link => {
+        //         link.addEventListener("click", async (e) => {
+        //             e.preventDefault();
+        //             const url = link.getAttribute("data-url");
+
+        //             try {
+        //                 const response = await fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } });
+        //                 if (!response.ok) throw new Error("Page load failed");
+
+        //                 const html = await response.text();
+        //                 contentArea.innerHTML = html;
+        //             } catch (err) {
+        //                 contentArea.innerHTML = `<div class="alert alert-danger">Error loading page: ${err.message}</div>`;
+        //             }
+        //         });
+        //     });
+        // });
+                document.addEventListener("DOMContentLoaded", () => {
+            const contentArea = document.getElementById("contentArea");
+
+            document.querySelectorAll("a[data-url]").forEach(link => {
+                link.addEventListener("click", async (e) => {
+                    e.preventDefault();
+                    const url = link.getAttribute("data-url");
+
+                    try {
+                        // Push state to the browser's history
+                        window.history.pushState({ url }, "", url);
+
+                        const response = await fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } });
+                        if (!response.ok) throw new Error("Page load failed");
+
+                        const html = await response.text();
+                        contentArea.innerHTML = html;
+                    } catch (err) {
+                        contentArea.innerHTML = `<div class="alert alert-danger">Error loading page: ${err.message}</div>`;
+                    }
+                });
+            });
+        });
+
+    </script>
+}

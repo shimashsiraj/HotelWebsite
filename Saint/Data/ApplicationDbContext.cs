@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Saint.Models;
-using Saint.Models.AdminViewModel;
 using Saint.Models.Invoice;
 
 namespace Saint.Data
@@ -24,6 +23,7 @@ namespace Saint.Data
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<RoomImage> RoomImages { get; set; }
         public DbSet<Tax> Taxes { get; set; }
+        public DbSet<BookingTax> BookingTaxes { get; set; }
 
     }
 }

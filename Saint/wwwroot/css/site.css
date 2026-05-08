@@ -1,6 +1,6 @@
-html {
+/*html {
   font-size: 14px;
-}
+}*/
 
 @media (min-width: 768px) {
   html {
@@ -15,10 +15,12 @@ html {
 html {
   position: relative;
   min-height: 100%;
+
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-color: rgb(168 114 114);
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {

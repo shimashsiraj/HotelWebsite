@@ -32,12 +32,16 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/saint/source/repos/Saint/Saint/Views/AdminDash.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5EYXNoLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Users/saint/source/repos/Saint/Saint/Views/AdminView/AdminView.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5WaWV3XEFkbWluVmlldy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/saint/source/repos/Saint/Saint/Views/Booking/Book.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ1xCb29rLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/saint/source/repos/Saint/Saint/Views/Calendar/Calendar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FsZW5kYXJcQ2FsZW5kYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/saint/source/repos/Saint/Saint/Views/Home/Index.cshtml]
@@ -46,6 +50,46 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/saint/source/repos/Saint/Saint/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/saint/source/repos/Saint/Saint/Views/HotelPolicies/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG90ZWxQb2xpY2llc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/saint/source/repos/Saint/Saint/Views/HotelPolicies/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG90ZWxQb2xpY2llc1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/saint/source/repos/Saint/Saint/Views/HotelPolicies/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG90ZWxQb2xpY2llc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/saint/source/repos/Saint/Saint/Views/HotelPolicies/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG90ZWxQb2xpY2llc1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/saint/source/repos/Saint/Saint/Views/HotelPolicies/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG90ZWxQb2xpY2llc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/saint/source/repos/Saint/Saint/Views/Promotions/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvbW90aW9uc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/saint/source/repos/Saint/Saint/Views/Promotions/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvbW90aW9uc1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/saint/source/repos/Saint/Saint/Views/Promotions/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvbW90aW9uc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/saint/source/repos/Saint/Saint/Views/Promotions/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvbW90aW9uc1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/saint/source/repos/Saint/Saint/Views/Promotions/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvbW90aW9uc1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/saint/source/repos/Saint/Saint/Views/Rooms/Create.cshtml]
@@ -76,16 +120,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9vbVR5cGVzXERlbGV0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/saint/source/repos/Saint/Saint/Views/RoomTypes/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9vbVR5cGVzXERldGFpbHMuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Users/saint/source/repos/Saint/Saint/Views/RoomTypes/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9vbVR5cGVzXEVkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/saint/source/repos/Saint/Saint/Views/RoomTypes/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9vbVR5cGVzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/saint/source/repos/Saint/Saint/Views/RoomTypes/_Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9vbVR5cGVzXF9EZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/saint/source/repos/Saint/Saint/Views/Shared/Error.cshtml]

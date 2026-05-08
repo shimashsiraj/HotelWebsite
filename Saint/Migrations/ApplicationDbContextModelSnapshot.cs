@@ -17,7 +17,7 @@ namespace Saint.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.6")
+                .HasAnnotation("ProductVersion", "9.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -232,6 +232,10 @@ namespace Saint.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("BookingReference")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CheckIn")
                         .HasColumnType("datetime2");
 
@@ -241,17 +245,16 @@ namespace Saint.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("DepositAmount")
+                    b.Property<decimal?>("DepositAmount")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("DepositMethod")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("DepositReturnedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDepositReturned")
+                    b.Property<bool?>("IsDepositReturned")
                         .HasColumnType("bit");
 
                     b.Property<int>("RoomId")
@@ -273,6 +276,34 @@ namespace Saint.Migrations
                     b.ToTable("Bookings");
                 });
 
+            modelBuilder.Entity("Saint.Models.BookingTax", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BookingId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TaxAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("TaxName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TaxRate")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookingId");
+
+                    b.ToTable("BookingTaxes");
+                });
+
             modelBuilder.Entity("Saint.Models.Customer", b =>
                 {
                     b.Property<int>("Id")
@@ -281,21 +312,26 @@ namespace Saint.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("CountryCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Phone")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -399,6 +435,10 @@ namespace Saint.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("PromotionName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("RoomTypeId")
                         .HasColumnType("int");
 
@@ -466,7 +506,7 @@ namespace Saint.Migrations
                     b.ToTable("Rooms");
                 });
 
-            modelBuilder.Entity("Saint.Models.RoomImages", b =>
+            modelBuilder.Entity("Saint.Models.RoomImage", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -530,6 +570,10 @@ namespace Saint.Migrations
                     b.Property<DateTime>("EffectiveFrom")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("TaxName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("TaxRate")
                         .HasColumnType("decimal(18,2)");
 
@@ -592,13 +636,13 @@ namespace Saint.Migrations
             modelBuilder.Entity("Saint.Models.Booking", b =>
                 {
                     b.HasOne("Saint.Models.Customer", "Customer")
-                        .WithMany("Bookings")
+                        .WithMany()
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Saint.Models.Room", "Room")
-                        .WithMany("Bookings")
+                        .WithMany()
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -606,6 +650,17 @@ namespace Saint.Migrations
                     b.Navigation("Customer");
 
                     b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("Saint.Models.BookingTax", b =>
+                {
+                    b.HasOne("Saint.Models.Booking", "Booking")
+                        .WithMany("BookingTaxes")
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Booking");
                 });
 
             modelBuilder.Entity("Saint.Models.Invoice.Invoice", b =>
@@ -644,7 +699,7 @@ namespace Saint.Migrations
             modelBuilder.Entity("Saint.Models.Review", b =>
                 {
                     b.HasOne("Saint.Models.Customer", "Customer")
-                        .WithMany("Reviews")
+                        .WithMany()
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -655,7 +710,7 @@ namespace Saint.Migrations
             modelBuilder.Entity("Saint.Models.Room", b =>
                 {
                     b.HasOne("Saint.Models.RoomType", "RoomType")
-                        .WithMany()
+                        .WithMany("Rooms")
                         .HasForeignKey("RoomTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -663,10 +718,10 @@ namespace Saint.Migrations
                     b.Navigation("RoomType");
                 });
 
-            modelBuilder.Entity("Saint.Models.RoomImages", b =>
+            modelBuilder.Entity("Saint.Models.RoomImage", b =>
                 {
                     b.HasOne("Saint.Models.RoomType", "RoomType")
-                        .WithMany("Images")
+                        .WithMany("RoomImages")
                         .HasForeignKey("RoomTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -676,25 +731,17 @@ namespace Saint.Migrations
 
             modelBuilder.Entity("Saint.Models.Booking", b =>
                 {
+                    b.Navigation("BookingTaxes");
+
                     b.Navigation("Payment")
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Saint.Models.Customer", b =>
-                {
-                    b.Navigation("Bookings");
-
-                    b.Navigation("Reviews");
-                });
-
-            modelBuilder.Entity("Saint.Models.Room", b =>
-                {
-                    b.Navigation("Bookings");
-                });
-
             modelBuilder.Entity("Saint.Models.RoomType", b =>
                 {
-                    b.Navigation("Images");
+                    b.Navigation("RoomImages");
+
+                    b.Navigation("Rooms");
                 });
 #pragma warning restore 612, 618
         }
