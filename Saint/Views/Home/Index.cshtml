@@ -4,10 +4,22 @@
 
 @model List<Saint.Models.RoomType>
 
+<div class="float-end border-0 p-3 rounded-3 shadow-lg" style="max-width: 280px; background: linear-gradient(to bottom, #ffde59, #f0a500);">
+    <span class="d-block text-center">
+        <img src="~/images/fifa.png" class="img-fluid rounded-3 shadow-sm" style="max-width: 180px; height: auto;" alt="FIFA Promo" />
+    </span>
+
+    <p class="form-check border-0 p-2 text-center rounded-3 mt-3" style="background-color: #333; color: #fff; font-size: 1.1rem;">
+        <span class="text-warning fw-bold fs-5">Excited for 2026 Fifa?</span> <br />
+        <span class="p-1 bg-warning text-dark rounded-3 ">PROMCODE: <span class="text-dark fw-bolder">SAINT26</span></span>
+    </p>
+</div>
+
+
 
 <div class="d-flex justify-content-center align-items-center text-center mb-3">
     <div class="me-3">
-        <h2 class="mb-1" style="font-family: 'Lucida Sans', Geneva, Verdana, sans-serif;">
+        <h2 class="mb-1 fw-bold text-light" style="font-family: 'Lucida Sans', Geneva, Verdana, sans-serif;">
             Welcome to the city of
         </h2>
         <h2 class="mt-0 text-warning" style="font-family: 'Lucida Sans', Geneva, Verdana, sans-serif;">
@@ -15,6 +27,8 @@
         </h2>
     </div>
     <img src="/images/toronto.png" alt="Toronto" style="width: 120px;" />
+
+
 </div>
 
 
@@ -24,21 +38,21 @@
     <div class="d-flex justify-content-center gap-4 p-3">
         <!-- Check-In -->
         <div class="d-flex flex-column text-center">
-            <label for="checkIn" class="control-label" style="font-family:'Trebuchet MS';">Check-In</label>
+            <label for="checkIn" class="control-label fw-bold text-warning" style="font-family:'Trebuchet MS';">Check-In</label>
             <input id="checkIn" name="checkIn" value="@ViewBag.CheckIn" type="date" class="form-control text-center p-2 rounded-3 bg-light"
                    style="width: 180px; font-family:'Franklin Gothic Medium';" />
         </div>
 
         <!-- Check-Out -->
         <div class="d-flex flex-column text-center">
-            <label for="checkOut" class="control-label" style="font-family:'Trebuchet MS';">Check-Out</label>
+            <label for="checkOut" class="control-label fw-bold text-warning" style="font-family:'Trebuchet MS';">Check-Out</label>
             <input id="checkOut" name="checkOut" value="@ViewBag.CheckOut" type="date" class="form-control text-center p-2 rounded-3 bg-light"
                    style="width: 180px; font-family:'Franklin Gothic Medium';" />
         </div>
 
         <!-- Occupancy (hidden input to hold the number) -->
         <div class="d-flex flex-column text-center">
-            <label class="control-label" style="font-family:'Trebuchet MS';">Occupancy</label>
+            <label class="control-label fw-bold text-light" style="font-family:'Trebuchet MS';">Occupancy</label>
             <button type="button" class="btn btn-outline-secondary rounded-3" style="width: 300px;" data-bs-toggle="modal" data-bs-target="#occupancyModal" id="occupancyDisplay">
                 2 Persons
             </button>
@@ -51,20 +65,51 @@
 
 @if (Model != null && Model.Any())
 {
-    <h3 class="mt-5">Available Room Types</h3>
+    <h3 class="mt-5 text-light text-center text-uppercase">Available Room Types</h3>
     <div class="row">
         @foreach (var rt in Model)
         {
-            <div class="col-md-4 mb-4">
+            <div class="col-md-3 mb-4">
                 <div class="card shadow-sm">
-                    <img src="/images/rooms/@rt.RoomImages" class="card-img-top" alt="@rt.Name" />
+                    <div id="carousel-@rt.Id" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            @for (int i = 0; i < rt.RoomImages.Count; i++)
+                            {
+                                var img = rt.RoomImages.ElementAt(i);
+                                <div class="carousel-item @(i == 0 ? "active" : "")">
+                                    <img src="@Url.Content(img.ImageUrl)"
+                                         class="d-block"
+                                         alt="@img.Caption ?? rt.Name" style="width: 100%; height: 300px" />
+                                    @if (!string.IsNullOrEmpty(img.Caption))
+                                    {
+                                        <div class="carousel-caption d-none d-md-block">
+                                            <p>@img.Caption</p>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel-@rt.Id" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon"></span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carousel-@rt.Id" data-bs-slide="next">
+                            <span class="carousel-control-next-icon"></span>
+                        </button>
+                    </div>
+
 
                     <div class="card-body">
+                        <h5 class="text-success">$@rt.Price</h5>
                         <h5 class="card-title">@rt.Name</h5>
-                        <p class="card-text">Capacity: @rt.Capacity</p>
+                        <p class="card-text">Occupancy: @rt.Capacity</p>
                         <p class="card-text">@rt.Description</p>
-                        <a href="@Url.Action("Book", "Booking", new { roomTypeId = rt.Id, checkIn = ViewBag.CheckIn, checkOut = ViewBag.CheckOut })"
-                           class="btn btn-primary">Book Now</a>
+                        <a asp-controller="Booking" asp-action="Book"
+                           asp-route-roomTypeId="@rt.Id"
+                           asp-route-checkIn="@ViewBag.CheckIn"
+                           asp-route-checkOut="@ViewBag.CheckOut"
+                           class="btn btn-primary">
+                            Book Now
+                        </a>
                     </div>
                 </div>
             </div>
@@ -91,7 +136,7 @@ else if (Context.Request.Query.Count > 0)
                     <label class="d-block">Adults</label>
                     <div class="d-flex justify-content-center align-items-center gap-3">
                         <button type="button" class="btn btn-outline-secondary" onclick="adjustCount('adults', -1)">−</button>
-                        <span id="adults" class="fw-bold fs-5">2</span>
+                        <span id="adults" class="fw-bold fs-5">@ViewBag.Occupancy</span>
                         <button type="button" class="btn btn-outline-secondary" onclick="adjustCount('adults', 1)">+</button>
                     </div>
                 </div>
@@ -176,14 +221,26 @@ else if (Context.Request.Query.Count > 0)
         const timeDiff = checkOutDate.getTime() - checkInDate.getTime();
         const nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-        let label = "";
+            let label;
 
-        if (children > 0) {
-            const childLabel = `${children} ${children === 1 ? "Child" : "Children"}`;
-            label = `${adults} Adults and ${childLabel} — ${nights} ${nights === 1 ? "Night" : "Nights"}`;
-        } else {
-            label = `${adults} ${adults === 1 ? "Adult" : "Adults"} — ${nights} ${nights === 1 ? "Night" : "Nights"}`;
-        }
+    const adultLabel = `${adults} ${adults === 1 ? "Adult" : "Adults"}`;
+    const nightLabel = `${nights} ${nights === 1 ? "Night" : "Nights"}`;
+
+    if (children > 0) {
+        const childLabel = `${children} ${children === 1 ? "Child" : "Children"}`;
+        label = `${adultLabel}, ${childLabel} and ${nightLabel}`;
+    } else {
+        label = `${adultLabel} and ${nightLabel}`;
+    }
+        // let label = "";
+
+        // if (children > 0) {
+        //     const childLabel = `${children} ${children === 1 ? "Child" : "Children"}`;
+        //     const adultLabel = `${adults} ${adults === 1 ? "Adult" : "Adults"}`;
+        //     label = `${adultLabel}, ${childLabel}` , `${nights} ${nights === 1 ? "Night" : "Nights"}`;
+        // } else {
+        //     label = `${adults} ${adults === 1 ? "Adult" : "Adults"} and ${nights} ${nights === 1 ? "Night" : "Nights"}`;
+        // }
 
         document.getElementById("occupancyDisplay").innerText = label;
     }

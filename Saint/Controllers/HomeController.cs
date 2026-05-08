@@ -32,7 +32,7 @@ namespace Saint.Controllers
             {
                 checkIn = DateTime.Today;
                 checkOut = DateTime.Today.AddDays(1);
-                occupancy = 2;
+                occupancy = 1;
             }
 
             // Now filter with final values
